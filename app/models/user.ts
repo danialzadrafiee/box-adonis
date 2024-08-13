@@ -10,7 +10,19 @@ export default class User extends BaseModel {
   declare id: number
 
   @column()
-  declare wallet_address: string
+  declare telegram_id: number | null
+
+  @column()
+  declare telegram_username: string | null
+
+  @column()
+  declare telegram_first_name: string | null
+
+  @column()
+  declare telegram_last_name: string | null
+
+  @column()
+  declare wallet_address: string | null
 
   @column()
   declare ticket_capacity: number
@@ -45,12 +57,6 @@ export default class User extends BaseModel {
   @column()
   declare inviter_id: number | null
 
-  @column()
-  declare telegram_id: number | null
-
-  @column()
-  declare telegram_username: string | null
-
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
@@ -77,5 +83,4 @@ export default class User extends BaseModel {
     foreignKey: 'inviter_id',
   })
   declare referrals: HasMany<typeof User>
-
 }

@@ -1,4 +1,3 @@
-// app/controllers/users_controller.ts
 import type { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 
@@ -36,10 +35,27 @@ export default class UsersController {
   }
 
   async authenticate({ request, response }: HttpContext) {
-    const { telegram_id } = request.only(['telegram_id'])
+    const {
+      telegram_id,
+      telegram_first_name,
+      telegram_last_name,
+      telegram_username
+    } = request.only(['telegram_id', 'telegram_first_name', 'telegram_last_name', 'telegram_username'])
     let user = await User.findBy('telegram_id', telegram_id)
     if (!user) {
-      user = await User.create({ telegram_id })
+      user = await User.create({
+        telegram_id,
+        telegram_first_name,
+        telegram_last_name,
+        telegram_username
+      })
+    } else {
+      user.merge({
+        telegram_first_name,
+        telegram_last_name,
+        telegram_username
+      })
+      await user.save()
     }
     const token = await User.accessTokens.create(user)
     return response.json({
@@ -56,7 +72,9 @@ export default class UsersController {
     }
 
     const userData = request.only([
-      'telegram_id',
+      'telegram_username',
+      'telegram_first_name',
+      'telegram_last_name',
       'wallet_address',
       'ticket_capacity',
       'ticket_amount',
@@ -65,13 +83,10 @@ export default class UsersController {
       'chest_gold',
       'chest_diamond',
       'referral_code',
-      'referral_count',
       'tap_booster_level',
       'miner_booster_level',
       'estimated_join_date',
-      'invitor_id',
-      'invitor_username',
-      'telegram_username',
+      'inviter_id',
     ])
 
     user.merge(userData)
