@@ -6,7 +6,8 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.string('wallet_address')
+      table.integer('telegram_id')
+      table.string('wallet_address').nullable()
       table.integer('ticket_capacity').defaultTo(5)
       table.integer('ticket_amount').defaultTo(5)
       table.integer('cp').nullable().defaultTo(0)
@@ -18,7 +19,6 @@ export default class extends BaseSchema {
       table.integer('miner_booster_level').nullable().defaultTo(1)
       table.integer('estimated_join_date').nullable()
       table.integer('inviter_id').nullable()
-      table.integer('telegram_id').nullable()
       table.string('telegram_username').nullable()
       table.timestamp('created_at')
       table.timestamp('updated_at')

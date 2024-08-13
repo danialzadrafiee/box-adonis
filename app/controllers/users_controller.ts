@@ -36,10 +36,10 @@ export default class UsersController {
   }
 
   async authenticate({ request, response }: HttpContext) {
-    const { wallet_address } = request.only(['wallet_address'])
-    let user = await User.findBy('wallet_address', wallet_address)
+    const { telegram_id } = request.only(['telegram_id'])
+    let user = await User.findBy('telegram_id', telegram_id)
     if (!user) {
-      user = await User.create({ wallet_address })
+      user = await User.create({ telegram_id })
     }
     const token = await User.accessTokens.create(user)
     return response.json({
@@ -56,6 +56,7 @@ export default class UsersController {
     }
 
     const userData = request.only([
+      'telegram_id',
       'wallet_address',
       'ticket_capacity',
       'ticket_amount',
@@ -70,7 +71,6 @@ export default class UsersController {
       'estimated_join_date',
       'invitor_id',
       'invitor_username',
-      'telegram_id',
       'telegram_username',
     ])
 
@@ -90,5 +90,3 @@ export default class UsersController {
     return response.noContent()
   }
 }
-
-
