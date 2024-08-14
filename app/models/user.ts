@@ -22,6 +22,9 @@ export default class User extends BaseModel {
   declare telegram_last_name: string | null
 
   @column()
+  declare telegram_inviter_id: number | null
+
+  @column()
   declare wallet_address: string | null
 
   @column()
@@ -53,9 +56,6 @@ export default class User extends BaseModel {
 
   @column()
   declare estimated_join_date: number | null
-
-  @column()
-  declare telegram_inviter_id: number | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

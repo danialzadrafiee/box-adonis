@@ -58,7 +58,6 @@ export default class UsersController {
         telegram_first_name,
         telegram_last_name,
         telegram_username,
-        telegram_inviter_id: telegram_inviter_id || user.telegram_inviter_id // Only update if provided
       })
       await user.save()
     }
@@ -84,6 +83,7 @@ export default class UsersController {
       'telegram_username',
       'telegram_first_name',
       'telegram_last_name',
+      'telegram_inviter_id',
       'wallet_address',
       'ticket_capacity',
       'ticket_amount',
@@ -95,7 +95,6 @@ export default class UsersController {
       'tap_booster_level',
       'miner_booster_level',
       'estimated_join_date',
-      'telegram_inviter_id',
     ])
 
     user.merge(userData)
