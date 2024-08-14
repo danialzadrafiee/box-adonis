@@ -10,6 +10,7 @@ export default class extends BaseSchema {
       table.string('telegram_username').nullable()
       table.string('telegram_first_name').nullable();
       table.string('telegram_last_name').nullable();
+      table.integer('telegram_inviter_id').nullable()
       table.string('wallet_address').nullable()
       table.integer('ticket_capacity').defaultTo(5)
       table.integer('ticket_amount').defaultTo(5)
@@ -21,7 +22,6 @@ export default class extends BaseSchema {
       table.integer('tap_booster_level').nullable().defaultTo(1)
       table.integer('miner_booster_level').nullable().defaultTo(1)
       table.integer('estimated_join_date').nullable()
-      table.integer('inviter_id').nullable()
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })

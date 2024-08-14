@@ -39,32 +39,41 @@ export default class UsersController {
       telegram_id,
       telegram_first_name,
       telegram_last_name,
-      telegram_username
-    } = request.only(['telegram_id', 'telegram_first_name', 'telegram_last_name', 'telegram_username'])
+      telegram_username,
+      telegram_inviter_id
+    } = request.only(['telegram_id', 'telegram_first_name', 'telegram_last_name', 'telegram_username', 'telegram_inviter_id'])
+
     let user = await User.findBy('telegram_id', telegram_id)
+
     if (!user) {
       user = await User.create({
         telegram_id,
         telegram_first_name,
         telegram_last_name,
-        telegram_username
+        telegram_username,
+        telegram_inviter_id
       })
     } else {
       user.merge({
         telegram_first_name,
         telegram_last_name,
-        telegram_username
+        telegram_username,
+        telegram_inviter_id: telegram_inviter_id || user.telegram_inviter_id // Only update if provided
       })
       await user.save()
     }
+
     const token = await User.accessTokens.create(user)
     return response.json({
       token: {
         type: 'bearer',
         value: token.value!.release(),
       },
+      user: user
     })
   }
+
+
   async update({ auth, request, response }: HttpContext) {
     const user = auth.user
     if (!user) {
@@ -86,7 +95,7 @@ export default class UsersController {
       'tap_booster_level',
       'miner_booster_level',
       'estimated_join_date',
-      'inviter_id',
+      'telegram_inviter_id',
     ])
 
     user.merge(userData)

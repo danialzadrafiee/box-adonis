@@ -55,7 +55,7 @@ export default class User extends BaseModel {
   declare estimated_join_date: number | null
 
   @column()
-  declare inviter_id: number | null
+  declare telegram_inviter_id: number | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -75,12 +75,12 @@ export default class User extends BaseModel {
   declare tasks: ManyToMany<typeof Task>
 
   @belongsTo(() => User, {
-    foreignKey: 'inviter_id',
+    foreignKey: 'telegram_inviter_id',
   })
   declare inviter: BelongsTo<typeof User>
 
   @hasMany(() => User, {
-    foreignKey: 'inviter_id',
+    foreignKey: 'telegram_inviter_id',
   })
   declare referrals: HasMany<typeof User>
 }

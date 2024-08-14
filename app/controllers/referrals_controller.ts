@@ -17,14 +17,14 @@ export default class ReferralsController {
     if (!user) {
       user = await User.create({
         wallet_address,
-        inviter_id: inviter.id,
+        telegram_inviter_id: inviter.id,
         ticket_capacity: 6,
         ticket_amount: 6,
       })
-    } else if (user.inviter_id) {
+    } else if (user.telegram_inviter_id) {
       return response.badRequest('User already joined with a referral')
     } else {
-      user.inviter_id = inviter.id
+      user.telegram_inviter_id = inviter.id
       user.ticket_capacity += 1
       user.ticket_amount = user.ticket_capacity
       await user.save()
