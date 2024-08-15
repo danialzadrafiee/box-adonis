@@ -10,7 +10,7 @@ export default class User extends BaseModel {
   declare id: number
 
   @column()
-  declare telegram_id: number | null
+  declare telegram_id: number
 
   @column()
   declare telegram_username: string | null

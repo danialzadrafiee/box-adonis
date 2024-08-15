@@ -4,20 +4,23 @@ import UsersController from '#controllers/users_controller'
 import { middleware } from './kernel.js'
 import SettingsController from '#controllers/settings_controller'
 import TasksController from '#controllers/tasks_controller'
-import ReferralsController from '#controllers/referrals_controller'
+import AdminController from '#controllers/admin_controller'
 
 
 router.group(() => {
   router.post('/authenticate', [UsersController, 'authenticate'])
   router.post('/index', [UsersController, 'index'])
+  router.get('/rank', [UsersController, 'listByRank'])
   router.group(() => {
     router.post('/is-authenticated', [UsersController, 'isAuthenticated'])
     router.post('/me', [UsersController, 'me'])
     router.post('/show', [UsersController, 'show'])
     router.post('/update', [UsersController, 'update'])
     router.post('/delete', [UsersController, 'delete'])
+    router.get('/direct-referrals', [UsersController, 'getDirectReferrals'])
   }).use(middleware.auth())
 }).prefix('/user')
+
 
 router.group(() => {
   router.get('/index', [SettingsController, 'index'])
@@ -30,8 +33,9 @@ router.group(() => {
   router.post('/:id/complete', [TasksController, 'complete'])
 }).prefix('/tasks').use(middleware.auth())
 
+// Admin routes
 router.group(() => {
-  router.get('/invited-users', [ReferralsController, 'getInvitedUsers'])
-}).prefix('/referrals').use(middleware.auth())
-
-router.post('/join-by-referral', [ReferralsController, 'joinByReferral'])
+  router.get('/reset-tickets', [AdminController, 'resetTickets'])
+  router.get('/user-stats', [AdminController, 'getUserStats'])
+  // Add more admin routes as needed
+}).prefix('/admin')
