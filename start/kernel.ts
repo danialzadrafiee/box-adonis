@@ -1,6 +1,7 @@
 import router from '@adonisjs/core/services/router'
 import server from '@adonisjs/core/services/server'
 import { scheduleTicketIncrease } from '#services/increase_tickets_service'
+import { scheduleMineIncrease } from '#services/increase_mine_cp_service'
 
 server.errorHandler(() => import('#exceptions/handler'))
 
@@ -18,3 +19,4 @@ export const middleware = router.named({
 
 // Start the ticket increase scheduler
 scheduleTicketIncrease()
+scheduleMineIncrease()
