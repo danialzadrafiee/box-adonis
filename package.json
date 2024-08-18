@@ -55,10 +55,14 @@
     "@adonisjs/core": "^6.12.1",
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^21.1.1",
+    "@adonisjs/view": "^6.2.0",
     "@vinejs/vine": "^2.1.0",
     "better-sqlite3": "^11.1.2",
+    "edge.js": "^6.0.2",
+    "install": "^0.13.0",
     "luxon": "^3.5.0",
     "node-cron": "^3.0.3",
+    "npm": "^10.8.2",
     "reflect-metadata": "^0.2.2"
   },
   "hotHook": {

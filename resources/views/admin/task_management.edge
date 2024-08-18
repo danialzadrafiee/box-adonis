@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: #333;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #444;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+        th, td {
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        #passwordPrompt {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #passwordForm {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        #loadingMessage {
+            color: white;
+            font-size: 24px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="passwordPrompt">
+        <form id="passwordForm">
+            <input type="password" id="passwordInput" placeholder="Enter password" required>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div id="content" style="display: none;">
+        <h1>Task Management</h1>
+
+        <form id="addTaskForm">
+            <h2>Add New Task</h2>
+            <input type="text" id="image" placeholder="Image URL" required>
+            <input type="text" id="link" placeholder="Task Link" required>
+            <textarea id="description" placeholder="Task Description" required></textarea>
+            <input type="number" id="reward" placeholder="Reward Points" required>
+            <button type="submit">Add Task</button>
+        </form>
+
+        <h2>Task List</h2>
+        <table id="taskTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Link</th>
+                    <th>Description</th>
+                    <th>Reward</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @each(task in tasks)
+                <tr>
+                    <td>{{ task.id }}</td>
+                    <td><img src="{{ task.image }}" alt="Task Image" width="50"></td>
+                    <td><a href="{{ task.link }}" target="_blank">{{ task.link }}</a></td>
+                    <td>{{ task.description }}</td>
+                    <td>{{ task.reward }}</td>
+                    <td><button onclick="removeTask({{ task.id }})">Remove</button></td>
+                </tr>
+                @end
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const correctPassword = 'upword@dpie';
+
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const enteredPassword = document.getElementById('passwordInput').value;
+            if (enteredPassword === correctPassword) {
+                const passwordPrompt = document.getElementById('passwordPrompt');
+                passwordPrompt.innerHTML = '<div id="loadingMessage">Authenticating...</div>';
+
+                // Fake delay
+                setTimeout(() => {
+                    passwordPrompt.style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
+                }, 2000); // 2 second delay
+            } else {
+                alert('Incorrect password. Please try again.');
+            }
+        });
+
+        document.getElementById('addTaskForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const task = {
+                image: document.getElementById('image').value,
+                link: document.getElementById('link').value,
+                description: document.getElementById('description').value,
+                reward: parseInt(document.getElementById('reward').value)
+            };
+
+            try {
+                const response = await fetch('/admin/tasks', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(task)
+                });
+                if (response.ok) {
+                    alert('Task added successfully');
+                    location.reload();
+                } else {
+                    alert('Failed to add task');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred');
+            }
+        });
+
+        async function removeTask(id) {
+            if (confirm('Are you sure you want to remove this task?')) {
+                try {
+                    const response = await fetch(`/admin/tasks/${id}`, { method: 'DELETE' });
+                    if (response.ok) {
+                        alert('Task removed successfully');
+                        location.reload();
+                    } else {
+                        alert('Failed to remove task');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('An error occurred');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

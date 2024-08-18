@@ -5,6 +5,7 @@ import { middleware } from './kernel.js'
 import SettingsController from '#controllers/settings_controller'
 import TasksController from '#controllers/tasks_controller'
 import AdminController from '#controllers/admin_controller'
+import Task from '#models/task'
 
 
 router.group(() => {
@@ -37,5 +38,11 @@ router.group(() => {
 router.group(() => {
   router.get('/reset-tickets', [AdminController, 'resetTickets'])
   router.get('/user-stats', [AdminController, 'getUserStats'])
-  // Add more admin routes as needed
+  router.post('/tasks', [AdminController, 'addTask'])
+  router.delete('/tasks/:id', [AdminController, 'removeTask'])
+  router.get('/tasks-list', [AdminController, 'listTasks'])
+  router.get('/task-help', async ({ view }: any) => {
+    const tasks = await Task.all()
+    return view.render('admin/task_management', { tasks })
+  })
 }).prefix('/admin')
