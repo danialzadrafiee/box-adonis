@@ -18,7 +18,7 @@ export function scheduleMineIncrease() {
       for (const user of users) {
         // Calculate CP increase
         const hourlyIncrease = user.miner_booster_level * settings.miner_multiplier_reward
-        const cpIncrease = Math.floor(hourlyIncrease * intervalSeconds / secondsPerHour)
+        const cpIncrease = hourlyIncrease * intervalSeconds / secondsPerHour
 
         // Increase CP
         await db.from('users')
