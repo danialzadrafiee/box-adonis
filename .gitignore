@@ -19,3 +19,4 @@ yarn-error.log
 .env
 .sqlite3
 /tmp/*
+.env.local
