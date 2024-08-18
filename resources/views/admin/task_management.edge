@@ -3,143 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Management</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            color: #333;
-        }
-        form {
-            background: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-        input, textarea {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button {
-            background: #333;
-            color: #fff;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background: #444;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-        }
-        th, td {
-            text-align: left;
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        #passwordPrompt {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        #passwordForm {
-            background: white;
-            padding: 20px;
-            border-radius: 5px;
-        }
-        #loadingMessage {
-            color: white;
-            font-size: 24px;
-            text-align: center;
-        }
-    </style>
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body>
-    <div id="passwordPrompt">
-        <form id="passwordForm">
-            <input type="password" id="passwordInput" placeholder="Enter password" required>
-            <button type="submit">Submit</button>
+<body class="bg-gray-100 font-sans">
+    <div id="passwordPrompt" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
+        <form id="passwordForm" class="bg-white p-8 rounded-lg shadow-lg w-96">
+            <h2 class="text-2xl font-bold mb-4 text-center text-gray-800">Admin Login</h2>
+            <div class="relative">
+                <input type="password" id="passwordInput" placeholder="Enter password" required class="w-full p-3 pl-10 mb-4 border rounded text-lg">
+                <span class="absolute left-3 top-3 text-gray-400">
+                    <i class="mdi mdi-lock-outline text-xl"></i>
+                </span>
+            </div>
+            <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition duration-300 text-lg">
+                <i class="mdi mdi-login mr-2"></i> Login
+            </button>
         </form>
     </div>
 
-    <div id="content" style="display: none;">
-        <h1>Task Management</h1>
+    <div id="content" class="container mx-auto p-8 hidden">
+        <h1 class="text-4xl font-bold mb-8 text-gray-800">Admin Dashboard</h1>
 
-        <form id="addTaskForm">
-            <h2>Add New Task</h2>
-            <input type="text" id="image" placeholder="Image URL" required>
-            <input type="text" id="link" placeholder="Task Link" required>
-            <textarea id="description" placeholder="Task Description" required></textarea>
-            <input type="number" id="reward" placeholder="Reward Points" required>
-            <button type="submit">Add Task</button>
-        </form>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700 flex items-center">
+                    <i class="mdi mdi-cog mr-2 text-blue-500"></i> Game Settings
+                </h2>
+                <button id="toggleSettingsForm" class="bg-purple-500 text-white p-3 rounded hover:bg-purple-600 transition duration-300 w-full mb-4">
+                    <i class="mdi mdi-pencil mr-2"></i> Edit Settings
+                </button>
+                <div id="settingsForm" class="hidden">
+                    <form id="updateSettingsForm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="tap_multiplier_reward" class="block text-sm font-medium text-gray-700 mb-1">Tap Multiplier Reward</label>
+                                <input type="number" id="tap_multiplier_reward" name="tap_multiplier_reward" class="w-full p-2 border rounded">
+                            </div>
+                            <div>
+                                <label for="tap_upgrade_base_cost" class="block text-sm font-medium text-gray-700 mb-1">Tap Upgrade Base Cost</label>
+                                <input type="number" id="tap_upgrade_base_cost" name="tap_upgrade_base_cost" class="w-full p-2 border rounded">
+                            </div>
+                            <div>
+                                <label for="miner_multiplier_reward" class="block text-sm font-medium text-gray-700 mb-1">Miner Multiplier Reward</label>
+                                <input type="number" id="miner_multiplier_reward" name="miner_multiplier_reward" class="w-full p-2 border rounded">
+                            </div>
+                            <div>
+                                <label for="miner_upgrade_base_cost" class="block text-sm font-medium text-gray-700 mb-1">Miner Upgrade Base Cost</label>
+                                <input type="number" id="miner_upgrade_base_cost" name="miner_upgrade_base_cost" class="w-full p-2 border rounded">
+                            </div>
+                            <div>
+                                <label for="chest_silver_cp_cost" class="block text-sm font-medium text-gray-700 mb-1">Silver Chest CP Cost</label>
+                                <input type="number" id="chest_silver_cp_cost" name="chest_silver_cp_cost" class="w-full p-2 border rounded">
+                            </div>
+                            <div>
+                                <label for="chest_gold_cp_cost" class="block text-sm font-medium text-gray-700 mb-1">Gold Chest CP Cost</label>
+                                <input type="number" id="chest_gold_cp_cost" name="chest_gold_cp_cost" class="w-full p-2 border rounded">
+                            </div>
+                            <div>
+                                <label for="chest_diamond_cp_cost" class="block text-sm font-medium text-gray-700 mb-1">Diamond Chest CP Cost</label>
+                                <input type="number" id="chest_diamond_cp_cost" name="chest_diamond_cp_cost" class="w-full p-2 border rounded">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded hover:bg-blue-600 transition duration-300 mt-4">
+                            <i class="mdi mdi-content-save mr-2"></i> Update Settings
+                        </button>
+                    </form>
+                </div>
+            </div>
 
-        <h2>Task List</h2>
-        <table id="taskTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Image</th>
-                    <th>Link</th>
-                    <th>Description</th>
-                    <th>Reward</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @each(task in tasks)
-                <tr>
-                    <td>{{ task.id }}</td>
-                    <td><img src="{{ task.image }}" alt="Task Image" width="50"></td>
-                    <td><a href="{{ task.link }}" target="_blank">{{ task.link }}</a></td>
-                    <td>{{ task.description }}</td>
-                    <td>{{ task.reward }}</td>
-                    <td><button onclick="removeTask({{ task.id }})">Remove</button></td>
-                </tr>
-                @end
-            </tbody>
-        </table>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700 flex items-center">
+                    <i class="mdi mdi-plus-circle mr-2 text-green-500"></i> Add New Task
+                </h2>
+                <form id="addTaskForm">
+                    <div class="mb-4">
+                        <label for="image" class="block text-sm font-medium text-gray-700 mb-1">Image URL</label>
+                        <input type="text" id="image" placeholder="https://example.com/image.jpg" required class="w-full p-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <label for="link" class="block text-sm font-medium text-gray-700 mb-1">Task Link</label>
+                        <input type="text" id="link" placeholder="https://example.com/task" required class="w-full p-2 border rounded">
+                    </div>
+                    <div class="mb-4">
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Task Description</label>
+                        <textarea id="description" placeholder="Describe the task..." required class="w-full p-2 border rounded"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="reward" class="block text-sm font-medium text-gray-700 mb-1">Reward Points</label>
+                        <input type="number" id="reward" placeholder="100" required class="w-full p-2 border rounded">
+                    </div>
+                    <button type="submit" class="w-full bg-green-500 text-white p-3 rounded hover:bg-green-600 transition duration-300">
+                        <i class="mdi mdi-plus mr-2"></i> Add Task
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700 flex items-center">
+                <i class="mdi mdi-format-list-bulleted mr-2 text-indigo-500"></i> Task List
+            </h2>
+            <div class="overflow-x-auto">
+                <table id="taskTable" class="w-full">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="p-3 text-left">ID</th>
+                            <th class="p-3 text-left">Image</th>
+                            <th class="p-3 text-left">Link</th>
+                            <th class="p-3 text-left">Description</th>
+                            <th class="p-3 text-left">Reward</th>
+                            <th class="p-3 text-left">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @each(task in tasks)
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="p-3">{{ task.id }}</td>
+                            <td class="p-3"><img src="{{ task.image }}" alt="Task Image" class="w-12 h-12 object-cover rounded"></td>
+                            <td class="p-3"><a href="{{ task.link }}" target="_blank" class="text-blue-500 hover:underline">{{ task.link }}</a></td>
+                            <td class="p-3">{{ task.description }}</td>
+                            <td class="p-3">{{ task.reward }}</td>
+                            <td class="p-3">
+                                <button onclick="removeTask({{ task.id }})" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition duration-300">
+                                    <i class="mdi mdi-delete mr-1"></i> Remove
+                                </button>
+                            </td>
+                        </tr>
+                        @end
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script>
         const correctPassword = 'upword@dpie';
+        let currentSettings = null;
 
         document.getElementById('passwordForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const enteredPassword = document.getElementById('passwordInput').value;
             if (enteredPassword === correctPassword) {
-                const passwordPrompt = document.getElementById('passwordPrompt');
-                passwordPrompt.innerHTML = '<div id="loadingMessage">Authenticating...</div>';
-
-                // Fake delay
-                setTimeout(() => {
-                    passwordPrompt.style.display = 'none';
-                    document.getElementById('content').style.display = 'block';
-                }, 2000); // 2 second delay
+                Swal.fire({
+                    title: 'Authenticating...',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading()
+                    }
+                }).then(() => {
+                    document.getElementById('passwordPrompt').style.display = 'none';
+                    document.getElementById('content').classList.remove('hidden');
+                    loadSettings();
+                });
             } else {
-                alert('Incorrect password. Please try again.');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Incorrect Password',
+                    text: 'Please try again.'
+                });
+            }
+        });
+
+        document.getElementById('toggleSettingsForm').addEventListener('click', function() {
+            const settingsForm = document.getElementById('settingsForm');
+            settingsForm.classList.toggle('hidden');
+            if (!settingsForm.classList.contains('hidden') && currentSettings) {
+                populateSettingsForm(currentSettings);
+            }
+        });
+
+        async function loadSettings() {
+            try {
+                const response = await fetch('/admin/settings');
+                if (response.ok) {
+                    currentSettings = await response.json();
+                    populateSettingsForm(currentSettings);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to load settings',
+                        text: 'Please try again later.'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'An error occurred',
+                    text: 'Failed to load settings. Please try again later.'
+                });
+            }
+        }
+
+        function populateSettingsForm(settings) {
+            const mapping = {
+                'tapMultiplierReward': 'tap_multiplier_reward',
+                'tapUpgradeBaseCost': 'tap_upgrade_base_cost',
+                'minerMultiplierReward': 'miner_multiplier_reward',
+                'minerUpgradeBaseCost': 'miner_upgrade_base_cost',
+                'chestSilverCpCost': 'chest_silver_cp_cost',
+                'chestGoldCpCost': 'chest_gold_cp_cost',
+                'chestDiamondCpCost': 'chest_diamond_cp_cost'
+            };
+
+            Object.keys(mapping).forEach(key => {
+                const input = document.getElementById(mapping[key]);
+                if (input && settings[key] !== undefined) {
+                    input.value = settings[key];
+                }
+            });
+        }
+
+        document.getElementById('updateSettingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const settings = Object.fromEntries(formData.entries());
+
+            const apiData = {
+                tapMultiplierReward: parseInt(settings.tap_multiplier_reward),
+                tapUpgradeBaseCost: parseInt(settings.tap_upgrade_base_cost),
+                minerMultiplierReward: parseInt(settings.miner_multiplier_reward),
+                minerUpgradeBaseCost: parseInt(settings.miner_upgrade_base_cost),
+                chestSilverCpCost: parseInt(settings.chest_silver_cp_cost),
+                chestGoldCpCost: parseInt(settings.chest_gold_cp_cost),
+                chestDiamondCpCost: parseInt(settings.chest_diamond_cp_cost)
+            };
+
+            try {
+                const response = await fetch('/admin/settings-update', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(apiData)
+                });
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Settings Updated',
+                        text: 'The game settings have been successfully updated.'
+                    });
+                    currentSettings = await response.json();
+                    populateSettingsForm(currentSettings);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to update settings',
+                        text: 'Please try again later.'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'An error occurred',
+                    text: 'Failed to update settings. Please try again later.'
+                });
             }
         });
 
@@ -159,32 +280,126 @@
                     body: JSON.stringify(task)
                 });
                 if (response.ok) {
-                    alert('Task added successfully');
-                    location.reload();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Task Added',
+                        text: 'The new task has been successfully added.'
+                    }).then(() => {
+                        location.reload();
+                    });
                 } else {
-                    alert('Failed to add task');
+                  Swal.fire({
+                        icon: 'error',
+                        title: 'Failed to add task',
+                        text: 'Please try again later.'
+                    });
                 }
             } catch (error) {
                 console.error('Error:', error);
-                alert('An error occurred');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'An error occurred',
+                    text: 'Failed to add task. Please try again later.'
+                });
             }
         });
+        function setCookie(name, value, days) {
+            const expires = new Date();
+            expires.setTime(expires.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+        }
+        function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const savedPassword = getCookie('adminPassword');
+    if (savedPassword === correctPassword) {
+        showContent();
+    } else {
+        document.getElementById('passwordPrompt').style.display = 'flex';
+    }
+
+    document.getElementById('passwordForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const enteredPassword = document.getElementById('passwordInput').value;
+        if (enteredPassword === correctPassword) {
+            setCookie('adminPassword', enteredPassword, 7); // Save password for 7 days
+            showContent();
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Incorrect Password',
+                text: 'Please try again.'
+            });
+        }
+    });
+});
+
+function showContent() {
+    Swal.fire({
+        title: 'Authenticating...',
+        timer:100,
+        timerProgressBar: true,
+        didOpen: () => {
+            Swal.showLoading()
+        }
+    }).then(() => {
+        document.getElementById('passwordPrompt').style.display = 'none';
+        document.getElementById('content').classList.remove('hidden');
+        loadSettings();
+    });
+}
 
         async function removeTask(id) {
-            if (confirm('Are you sure you want to remove this task?')) {
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, remove it!'
+            });
+
+            if (result.isConfirmed) {
                 try {
                     const response = await fetch(`/admin/tasks/${id}`, { method: 'DELETE' });
                     if (response.ok) {
-                        alert('Task removed successfully');
-                        location.reload();
+                        Swal.fire(
+                            'Removed!',
+                            'The task has been removed.',
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
                     } else {
-                        alert('Failed to remove task');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed to remove task',
+                            text: 'Please try again later.'
+                        });
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    alert('An error occurred');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'An error occurred',
+                        text: 'Failed to remove task. Please try again later.'
+                    });
                 }
             }
+        }
+
+        // Load settings when the page loads
+        if (!document.getElementById('content').classList.contains('hidden')) {
+            loadSettings();
         }
     </script>
 </body>

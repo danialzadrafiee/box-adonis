@@ -1,6 +1,7 @@
 import { HttpContext } from '@adonisjs/core/http'
 import User from '#models/user'
 import Task from '#models/task'
+import Setting from '#models/setting'
 export default class AdminController {
   public async resetTickets({ response }: HttpContext) {
     try {
@@ -107,6 +108,50 @@ export default class AdminController {
         error: error instanceof Error ? error.message : String(error)
       })
     }
+  }
+
+
+  public async getSettings({ response }: HttpContext) {
+    const settings = await Setting.first()
+    return response.json(settings)
+  }
+
+  public async updateSettings({ request, response }: HttpContext) {
+    const settings = await Setting.first()
+    if (!settings) {
+      return response.status(404).json({ error: 'Settings not found' })
+    }
+
+    const incomingData = request.only([
+      'tapMultiplierReward',
+      'tapUpgradeBaseCost',
+      'minerMultiplierReward',
+      'minerUpgradeBaseCost',
+      'chestSilverCpCost',
+      'chestGoldCpCost',
+      'chestDiamondCpCost',
+    ])
+
+    console.log('Incoming data:', incomingData)
+
+    const updatedData = {
+      tap_multiplier_reward: incomingData.tapMultiplierReward,
+      tap_upgrade_base_cost: incomingData.tapUpgradeBaseCost,
+      miner_multiplier_reward: incomingData.minerMultiplierReward,
+      miner_upgrade_base_cost: incomingData.minerUpgradeBaseCost,
+      chest_silver_cp_cost: incomingData.chestSilverCpCost,
+      chest_gold_cp_cost: incomingData.chestGoldCpCost,
+      chest_diamond_cp_cost: incomingData.chestDiamondCpCost,
+    }
+
+    console.log('Updated data:', updatedData)
+
+    settings.merge(updatedData)
+    await settings.save()
+
+    console.log('Settings after save:', settings.toJSON())
+
+    return response.json(settings)
   }
 
 }

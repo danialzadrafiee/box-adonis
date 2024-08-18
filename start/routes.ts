@@ -40,9 +40,11 @@ router.group(() => {
   router.get('/user-stats', [AdminController, 'getUserStats'])
   router.post('/tasks', [AdminController, 'addTask'])
   router.delete('/tasks/:id', [AdminController, 'removeTask'])
-  router.get('/tasks-list', [AdminController, 'listTasks'])
+  router.get('/tasks', [AdminController, 'listTasks'])
   router.get('/task-help', async ({ view }: any) => {
     const tasks = await Task.all()
     return view.render('admin/task_management', { tasks })
   })
+  router.get('/settings', [AdminController, 'getSettings'])
+  router.post('/settings-update', [AdminController, 'updateSettings'])
 }).prefix('/admin')

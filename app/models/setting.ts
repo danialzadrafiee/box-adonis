@@ -26,9 +26,6 @@ export default class Setting extends BaseModel {
   @column()
   declare chest_diamond_cp_cost: number
 
-
-
-
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
