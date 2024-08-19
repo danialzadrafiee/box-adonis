@@ -30,6 +30,7 @@
     "#start/*": "./start/*.js",
     "#tests/*": "./tests/*.js",
     "#config/*": "./config/*.js"
+    
   },
   "devDependencies": {
     "@adonisjs/assembler": "^7.7.0",
@@ -40,27 +41,34 @@
     "@japa/assert": "^3.0.0",
     "@japa/plugin-adonisjs": "^3.0.1",
     "@japa/runner": "^3.1.4",
-    "@swc/core": "^1.7.6",
+    "@swc/core": "^1.7.14",
     "@types/luxon": "^3.4.2",
-    "@types/node": "^22.1.0",
+    "@types/node": "^22.4.1",
     "@types/node-cron": "^3.0.11",
     "hot-hook": "^0.2.6",
     "pino-pretty": "^11.2.2",
     "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
-    "typescript": "~5.5"
+    "typescript": "~5.5.4",
+    "vite": "^5.4.0"
+
   },
   "dependencies": {
     "@adonisjs/auth": "^9.2.3",
     "@adonisjs/core": "^6.12.1",
     "@adonisjs/cors": "^2.2.1",
-    "@adonisjs/lucid": "^21.1.1",
+    "@adonisjs/lucid": "^21.2.0",
+    "@adonisjs/vite": "^3.0.0",
     "@vinejs/vine": "^2.1.0",
     "better-sqlite3": "^11.1.2",
+    "edge.js": "^6.0.2",
     "install": "^0.13.0",
     "luxon": "^3.5.0",
     "node-cron": "^3.0.3",
     "npm": "^10.8.2",
+    "@adonisjs/session": "^7.4.2",
+    "@adonisjs/shield": "^8.1.1",
+    "@adonisjs/static": "^1.1.1",
     "reflect-metadata": "^0.2.2"
   },
   "hotHook": {

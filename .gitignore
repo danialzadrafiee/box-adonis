@@ -1,6 +1,7 @@
 # Dependencies and AdonisJS build
 node_modules
 build
+/tmp/*
 
 # Frontend assets compiled code
 public/assets
@@ -16,7 +17,5 @@ yarn-error.log
 
 # Platform specific
 .DS_Store
-.env
 .sqlite3
-/tmp/*
 .env.local
