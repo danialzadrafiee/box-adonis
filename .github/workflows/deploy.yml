@@ -19,8 +19,10 @@ jobs:
     - name: Deploy to Server
       run: |
         ssh root@193.36.84.39 << EOF
-          cd /projects/metabox-adonis
+          cd ~/projects/metabox-adonis
           git pull origin master
           docker compose down
           docker compose up --build -d
         EOF
+
+        
