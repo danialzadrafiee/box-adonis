@@ -30,7 +30,6 @@
     "#start/*": "./start/*.js",
     "#tests/*": "./tests/*.js",
     "#config/*": "./config/*.js"
-    
   },
   "devDependencies": {
     "@adonisjs/assembler": "^7.7.0",
@@ -51,13 +50,15 @@
     "ts-node": "^10.9.2",
     "typescript": "~5.5.4",
     "vite": "^5.4.0"
-
   },
   "dependencies": {
     "@adonisjs/auth": "^9.2.3",
     "@adonisjs/core": "^6.12.1",
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^21.2.0",
+    "@adonisjs/session": "^7.4.2",
+    "@adonisjs/shield": "^8.1.1",
+    "@adonisjs/static": "^1.1.1",
     "@adonisjs/vite": "^3.0.0",
     "@vinejs/vine": "^2.1.0",
     "better-sqlite3": "^11.1.2",
@@ -66,9 +67,6 @@
     "luxon": "^3.5.0",
     "node-cron": "^3.0.3",
     "npm": "^10.8.2",
-    "@adonisjs/session": "^7.4.2",
-    "@adonisjs/shield": "^8.1.1",
-    "@adonisjs/static": "^1.1.1",
     "reflect-metadata": "^0.2.2"
   },
   "hotHook": {
